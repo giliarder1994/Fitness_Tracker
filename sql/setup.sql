@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS fitness_tracker;
-USE fitness_tracker;
+CREATE DATABASE IF NOT EXISTS fitness_tracker_2;
+USE fitness_tracker_2;
 
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -9,41 +9,23 @@ CREATE TABLE IF NOT EXISTS usuarios (
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS alimentos (
+-- Tabela de Treinos
+CREATE TABLE IF NOT EXISTS treinos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    proteina DECIMAL(10,2) DEFAULT 0,
-    carbo DECIMAL(10,2) DEFAULT 0,
-    gordura DECIMAL(10,2) DEFAULT 0,
-    fibras DECIMAL(10,2) DEFAULT 0,
-    calorias_base DECIMAL(10,2) DEFAULT 0,
-    categoria VARCHAR(50) --Ex: Proteina, Carboidrato...
+    usuario_id INT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    grupo_muscular VARCHAR(100) NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS diario_alimentar (
-    id INT AUTO_INCREMENT PRIMARY KEY, 
-    user_id INT NOT NULL,
-    alimento_id INT NOT NULL,
-    quantidade DECIMAL(10,2) NOT NULL, -- em gramas
-    data DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (alimento_id) REFERENCES alimento(id) ON DELETE CASCADE
-);
-
+-- Tabela de Exercícios vinculada ao treino
 CREATE TABLE IF NOT EXISTS exercicios (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    categoria VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS diario_treino (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    exercicio_id INT NOT NULL,
+    treino_id INT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
     series INT NOT NULL,
     repeticoes INT NOT NULL,
-    carga DECIMAL(10,2) NOT NULL,
-    data  DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (exercicio_id) REFERENCES exercicios(id) ON DELETE CASCADE
+    carga DECIMAL(5,2) DEFAULT 0,
+    FOREIGN KEY (treino_id) REFERENCES treinos(id) ON DELETE CASCADE
 );

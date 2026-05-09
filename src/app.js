@@ -1,12 +1,11 @@
 const express = require('express');
 const app = express();
-const diarioRoutes = require("./routes/diarioRoutes");
+const authRoutes = require('./routes/authRoutes');
+const treinoRoutes = require('./routes/treinoRoutes');
 
 app.use(express.json());
 
-app.use('/auth', require('./routes/authRoutes'));
-app.use('/api/diario', diarioRoutes);
-
-
+app.use('/auth', authRoutes);
+app.use('/treinos', treinoRoutes);
 
 module.exports = app;

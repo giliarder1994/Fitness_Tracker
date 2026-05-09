@@ -3,13 +3,13 @@ const jwt = require('jsonwebtoken');
 module.exports = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
 
-    if(!token) return res.status(401).json({error: "Token não fornecido!"});
+    if (!token) return res.status(401).json({ error: 'Token não fornecido!' });
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.userID = decoded.id;
+        req.userId = decoded.id; // padrão único: req.userId
         next();
     } catch {
-        return res.status(401).json({error: "Token inválido!"});
+        return res.status(401).json({ error: 'Token inválido!' });
     }
 };
